@@ -1,0 +1,108 @@
+                    SQL CHEATSHEET    
+--- Basic SQL ---
+SELECT: Selects coloumns to be queried (*) if all columns need to be returned
+WHERE: This statement is used to filter the data returned from the query
+    Comparision Operators: >, >=, <, <=, =, !=
+    Logical Operators AND, OR, NOT, IN, BETWEEN
+    Strings: LIKE clause --> REGEXP has replaced like
+    IS NULL/IS NOT NULL 
+    TOP can be used to select # of rows: SELECT TOP 3 * FROM
+ORDER BY: Sorts the data by a column name, ASC or DESC
+    Alias names in SELECT can also be used to order data
+    1, 2 can be used too, but not robust (healthy, vigorous)
+LIMIT: Specifies number of results from table to a number
+    One argument: # of rows to be returned
+    Two arguments: Skip # of entries from first argument, return the next # in second
+    Use cases: Pagnation (Pagination in a database is the technique of dividing a large set of query results i)
+
+---- Multiple Tables ----
+INNER JOIN (Join): Result will contain entries from both tables where they are equal & not NULL
+SELF JOIN: Join table with itself, when rows are interrelated
+    Note use different aliases still
+    Can be used for Outer join 
+(FULL) OUTER JOIN: hen you need all entries from a column, regardless of the condition specified for joining, outer joins are used. 
+LEFT JOIN: All results are used for left table, right is added for matching rows
+RIGHT JOIN: Same logic as left except for right table
+CROSS Join:
+    Behaves like: SELECT * FROM Table1, Table2;
+    Use Cases: Generating combinations of items, Sample Data 
+UNIONS/UNION ALL: The UNION operator is used to combine the result-set of two or more SELECT statements from multiple tables
+
+---- Summarize the Data ----
+Aggregrate Functions: MIN, MAX, AVG, SUM, Country
+GROUP BY: arranges rows with the same values in specified columns into summary rows
+    Typically used with aggregrate functions 
+HAVING: Filter data after GROUP BY/After aggregration 
+        Filter Data using aggregrates ex. HAVING MAX(Salary) > 1000
+*Non-aggregated Columns: If you use HAVING without GROUP BY, any column in the SELECT list must be inside an aggregate function or functionally
+    dependent on columns in the HAVING clause, depending on the SQL dialect.
+
+---- SQL Built-In functions ----
+Numeric Functions:
+    ROUND: Rounded integer value, ROUND(5.73,1) --> 5.7
+    TRUNCATE: Truncated number after decimal value (5.735,2) --> 5.73
+    CEILING/FLOOR: Smallest/largest integer equal to the argument
+    ABS: Absolute value
+    RAND: Generate a random floating point number between 0 and 1
+String Functions:
+    Length: length of String
+    UPPER/Lower: Capitalizes/lowercases the letters
+    LTRIM/RTRIM: Returns string without any leading/trailing whitespace characters
+    LEFT(str,k)/RIGHT(str,k): Returns the first/last k characters of string str
+    SUBSTRING(str,i,n): Returns the substring of length n(optional) starting at index i(1 based indexing)
+    LOCATE(str1,str2): Returns the index of the first occurence of str1 in str2 (not case sensitive)
+    REPLACE(str,str_old,str_new): Returns string after replacing the first occurence of str_old in str with str_new
+    CONCAT(): Concatenates/Connects strings
+    REVERSE(): Reverse
+Date Functions:
+    NOW: Returns the current date and time in the format (YYYY-MM-DD HH:MM:SS)
+    CURDATE/CURTIME: Current date/time
+    EXTRACT(YEAR/MONTH/DAY/DAYNAME/HOUR/MINUTE/SECOND()): Returns the extracted date type, RTYPE is int
+
+---- Subqueries ----
+An SQL query used within “( )” of another SQL query is called as a Subquery.
+Subqueries in the SELECT clause are generally used for calculation of deviation, variance or mathematical/statistical operations on database.
+    SELECT * 
+    FROM items
+    WHERE item_price > (
+        SELECT AVG(item_price)
+        FROM items);
+
+---- Window Functions ----
+SQL window functions allow performing calculations across a set of rows that are related to the current row, without collapsing the result into a single value.
+They are commonly used for tasks like aggregates, rankings and running totals.
+PARTITION BY: It divides the data into groups using PARTITION BY.
+ORDER BY: Specifies the order of rows within each groups
+
+Aggregrate Window Functions: SUM(), AVG(), COUNT(), MAX(), MIN()
+Using AVG() we will calculate avg salary within each department
+    SELECT Name, Age, Department, Salary, 
+       AVG(Salary) OVER( PARTITION BY Department) AS Avg_Salary
+    FROM employee
+
+Ranking Window Functions:
+    RANK(): Assigns ranks to rows skipping duplicates
+    DENSE_RANK(): Assigns ranks to rows without skipping duplicates
+    ROW_NUMBER(): Unique number to each row in result set
+    PERCENT_RANK(): Shows the relative rank of a row as a percentage 
+Using RANK() we will rank employees by salary allowing gaps when salaries are equal (1,1,3)
+Using DENSE_RANK(), doesnt skip ranks. (1,1,2)
+    SELECT Name, Department, Salary,
+       RANK() OVER(PARTITION BY Department ORDER BY Salary DESC) AS emp_rank
+    FROM employee;
+
+
+---- Create A Table ----
+CREATE Table name_of_table (
+   name_of_column float,
+   name_of_column int,
+   name_of_column Varchar(255) );
+
+EXAMPLES OF CODE:
+UNIONS: 
+    SELECT City, Country FROM Customers
+    WHERE Country='Germany'
+    UNION
+    SELECT City, Country FROM Suppliers
+    WHERE Country='Germany'
+    ORDER BY City;

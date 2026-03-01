@@ -74,6 +74,10 @@ SQL window functions allow performing calculations across a set of rows that are
 They are commonly used for tasks like aggregates, rankings and running totals.
 PARTITION BY: It divides the data into groups using PARTITION BY.
 ORDER BY: Specifies the order of rows within each groups
+ROWS BETWEEN: THE WINDOW CLAUSE
+    ROWS BETWEEN 1 PRECEDING AND CURRENT ROW - the previous row and the current row.
+    ROWS BETWEEN 3 PRECEDING AND 1 FOLLOWING - the 3 previous rows, the current row, and the following row.
+    ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING - all rows in the partition. (DEFAULT ROWS BETWEEN)
 
 Aggregrate Window Functions: SUM(), AVG(), COUNT(), MAX(), MIN()
 Using AVG() we will calculate avg salary within each department
@@ -92,6 +96,9 @@ Using DENSE_RANK(), doesnt skip ranks. (1,1,2)
        RANK() OVER(PARTITION BY Department ORDER BY Salary DESC) AS emp_rank
     FROM employee;
 
+Navigation Window Functions:
+FIRST_VALUE() (or LAST_VALUE()) - Returns the first (or last) value in the input
+LEAD() (and LAG()) - Returns the value on a subsequent (or preceding) row
 
 ---- Create A Table ----
 CREATE Table name_of_table (

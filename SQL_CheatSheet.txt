@@ -7,6 +7,9 @@ WHERE: This statement is used to filter the data returned from the query
     Strings: LIKE clause --> REGEXP has replaced like
     IS NULL/IS NOT NULL 
     TOP can be used to select # of rows: SELECT TOP 3 * FROM
+    NOTE WHEN JOINING 	
+        - JOIN --- ON controls how rows match
+	    - WHERE controls which rows survive
 ORDER BY: Sorts the data by a column name, ASC or DESC
     Alias names in SELECT can also be used to order data
     1, 2 can be used too, but not robust (healthy, vigorous)

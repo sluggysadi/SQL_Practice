@@ -111,7 +111,8 @@ CREATE Table name_of_table (
 
 EXAMPLES OF CODE:
 UNIONS: 
-    SELECT City, Country FROM Customers
+    SELECT City, Country 
+    FROM Customers
     WHERE Country='Germany'
     UNION
     SELECT City, Country FROM Suppliers
